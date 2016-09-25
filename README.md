@@ -49,12 +49,12 @@ awk -v hi=HELLO '{print $1, hi}'
 ```
 ###3. Understanding Records and Fields
 
-####Exploring basic input-field separators
+####1 Exploring basic input-field separators
 we can set multiple seperator
 ```
 awk -F '[,!]' '{print $2}' file.txt
 ```
-####Specifying field and record separators with variables
+####2 Specifying field and record separators with variables
 set FS to specify seperator
 ```
 awk '{FS=","; print $2}'  //take effect on second line after
@@ -74,6 +74,26 @@ ORS = output field seperator,default=\n
 ```
 awk 'BEGIN{OFS=", ";ORS="!"}{print NF, $0}' file.txt
 ```
+####4 Solution: Change a CSV file to a tab-separated one
+```
+awk -F, '{print $1 "\t" $2 "\t" $3}' file.csv
+```
+
+###4. Understanding Variables and Operators
+####1 Using built-in variables
+If dealing with multiple files, NR=total record, FNR=record per file
+```
+awk '{print NR, FILENAME, FNR, $0}' file1.txt file2.txt
+```
+last field
+```
+awk '{print $NF}' file.txt
+```
+or
+```
+awk '{print $(NF-1)}' file.txt
+```
+(tbc)
 ###9 Combining 
 sum all txt file's size
 ```
