@@ -282,9 +282,37 @@ sed 's/\*$//' ls.out | awk '/\.awk$/{total+=$5;print}END{print total}'
 
 ####2 Parsing Excel CSV files: Line endings and quoting
 
-
-
-sum all txt file's size
 ```
-ls -l |awk '/\.txt$/{total +=$5; print}END{print total}'
+BEGIN{RS="\r"}
+{
+  for(i=1;i<=3;i++){
+    gsub("^\"|\"$","",$i);
+    gsub("\"\"","\"",$i);
+  }
+  print $1 $2 $3
+}
 ```
+####3 Parsing Excel CSV files:  Commas and new lines
+what if a line contains a new line char?
+```
+BEGIN{RS="\r"}
+{
+  while ( $NF ~ /^".*[^"]$/){
+    getline x;
+    $0 = $0 "\n" x;
+  }
+  for(i=1;i<=3;i++){
+    gsub("^\"|\"$","",$i);
+    gsub("\"\"","\"",$i);
+  }
+  print $1 $2 $3
+}
+```
+####5 Solution: Perform a join
+```
+BEGIN{
+  FS="\t";
+  OFS="\t";
+}
+```
+(tbc)
