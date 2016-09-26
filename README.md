@@ -184,7 +184,73 @@ END{
   print "</table>";
 }
 ```
+####4 Solution: Print only those lines consisting of a complete HTML entity
+print complete HTML entities
+```
+BEGIN{
+  FS='[<>]'
+}
+/^<.*>$/ {
+  if($(NF-1_==("/"$2)){
+    print;
+  }
+}
+```
+(this solution is very naive)
 
+
+###7. Formatting the output
+####1 Formatting output with printf()
+syntax: printf(format,value...)  
+Ex
+```
+awk -F ',' '{printf("%s\t%d\n",$1,$2)}' file.txt
+```
+
+####2. Formatting output with width and precision specifiers
+with `-` it is left aligned. Otherwise right aligned
+```
+awk -F ',' '{printf("%-20s\t%-10d\n",$1,$2)}' file.txt
+```
+others: 6.2f->at least 6 char with 2 decimal points
+
+###8. Functions and Arrays
+####1 Manipulating strings
+index(1-based)
+```
+index("abc","b") //2
+```
+match
+```
+match("abcd",/bc/) // 2, RSTART=2, RLENGTH=2
+```
+substr(str,start,len)  
+Ex: remove `the`
+```
+BEGIN{
+  target = "the";
+}
+{
+  s=index($0,target);
+  if(s==0){
+    print;
+  }else{
+    print substr($0,1,s-1) substr($0,s+length(target));
+  }
+}
+```
+sub(each line's first occurance),gsub
+note the sub function is in curly braces
+```
+awk '{sub(/ke/,"");print}' file.txt
+```
+
+split(field,arrayvar,splitor
+```
+awk -F, 'BEGIN{OFS='\t'} {split($1,arr,/ /); print a[2]", " a[1],$2}' file.txt
+```
+
+####2 Using associative arrays
 
 ###9 Combining 
 sum all txt file's size
