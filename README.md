@@ -143,6 +143,49 @@ Greedy and non-greedy. For HTML open close tag matching
 /<[^>]+>/      //open tag only
 ```
 
+
+
+
+###6 Using Control Struct
+####1. Building control structures
+if statement with double layer braces
+```
+awk '{if (NF < 5) {print "shortline" ,$0}else{print"longline", $0}}' file.txt
+```
+
+####2 Creating an HTML table
+```
+BEGIN{
+  FS="\t";
+  print "<table>";
+  print"<tr>";
+  print"\t<th>header</th>";
+  for(i=2;i<=5;i++){
+    print "\t<th>Round" i "</th>";
+  }
+  print "</tr>";
+}
+{
+  print"<tr>";
+  print"\t<td>$1</td>";
+  for(i=2;i<=5;i++){
+    print "\t<th>"$i"</th>";
+    total[i]+=$i;
+  }
+  print "</tr>";
+}
+END{
+ print"<tr>";
+  print"\t<td>average</td>";
+  for(i=2;i<=5;i++){
+    print "\t<td>"int(total[i]/NR)"</td>";
+  }
+  print "</tr>";
+  print "</table>";
+}
+```
+
+
 ###9 Combining 
 sum all txt file's size
 ```
