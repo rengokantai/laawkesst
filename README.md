@@ -93,7 +93,56 @@ or
 ```
 awk '{print $(NF-1)}' file.txt
 ```
-(tbc)
+####2 Creating user-defined variables
+review
+```
+awk '{name=$1;addr=$2;print name ", " addr}' file.txt
+```
+
+
+this is accepted:
+```
+awk '{a=1;b=3; print a+b}'  //4
+awk '{a=1;b=3; print a b}'  //13
+```
+num + string = num+0
+```
+awk '{a=1;b="a"; printa+b}'  //still 1
+```
+
+
+multiply has precedence over concat.
+```
+awk {a=1;b=2;c=3; print a b *c}' //16
+awk {a=1;b=2;c=3; print (a b) *c}' //36
+```
+####3 Working with operators and arrays
+awk only allows one d array.
+```
+awk '{a[1]=$1, a[2]=$2;print a[1],a[2]}' file.txt
+```
+###5 A Quick intro RE
+####1 RE basics
+Ex:
+```
+awk '/ke/{print}' file.txt
+```
+same as
+```
+awk '/ke/{print $0}' file.txt
+```
+print lines with /ke/ at 4th field (contains ke, maybe ke, key, ..)
+```
+awk '$4 ~ /ke/{print}' file.txt
+```
+/a.c/=abc=ac
+####2 Working with character classes
+Greedy and non-greedy. For HTML open close tag matching
+```
+/<.+>/       //match from open to clise
+/<[^>]+>/      //open tag only
+```
+
 ###9 Combining 
 sum all txt file's size
 ```
