@@ -251,8 +251,39 @@ awk -F, 'BEGIN{OFS='\t'} {split($1,arr,/ /); print a[2]", " a[1],$2}' file.txt
 ```
 
 ####2 Using associative arrays
+Use arbitrary name uaing as index name
+```
+awk '{a["first"]=$1; a["second"]=$2; print a["second"] a["first"]}'
+```
+for..in syntax
+```
+awk '{a["first"]=$1; a["second"]=$2;for(i in a){ print a[i] i}'
+>>> one two
+```
 
-###9 Combining 
+####3 Introducing AWK's math functions
+int(x), rand()
+
+###9 Combining AWK with other Tools
+####1 Using pipes
+get total file size of a folder
+```
+ls -l | awk '/\.txt$/{total += $5; ptint} END{print total}'
+```
+
+get total size of all awk files, including executables.(ending with *).
+```
+ls -lF >ls.out
+``` 
+to get this.,then to get total size:
+```
+sed 's/\*$//' ls.out | awk '/\.awk$/{total+=$5;print}END{print total}'
+```
+
+####2 Parsing Excel CSV files: Line endings and quoting
+
+
+
 sum all txt file's size
 ```
 ls -l |awk '/\.txt$/{total +=$5; print}END{print total}'
